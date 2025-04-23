@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Diamond Ad</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 300px;
+            height: 600px;
+            background: #f0f0f0;
+        }
+        .diamond-ad {
+            width: 300px;
+            height: 600px;
+            position: relative;
+            overflow: hidden;
+            background: white;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            background: url('images/bg.png') no-repeat center center;
+            background-size: 300px 600px;
+        }
+        .content {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        .logo {
+            width: 80px;
+            height: 80px;
+            animation: pulse 2s infinite;
+        }
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+        .price {
+            font-size: 24px;
+            font-weight: bold;
+            color: white;
+        }
+        .taka {
+            font-size: 24px;
+            font-weight: bold;
+            color: white;
+        }
+        .product-image {
+            width: 100%;
+            height: 300px;
+            object-fit: contain;
+            margin: 20px 0;
+            animation: scaleImage 2s infinite;
+            cursor: pointer;
+            position: relative;
+        }
+        @keyframes scaleImage {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+        .volume-control {
+            margin-top: auto;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+        }
+        .volume-slider {
+            width: 100%;
+            -webkit-appearance: none;
+            background: transparent;
+        }
+        .volume-slider::-webkit-slider-runnable-track {
+            width: 100%;
+            height: 10px;
+            background: white;
+            border-radius: 5px;
+        }
+        .volume-slider::-moz-range-track {
+            width: 100%;
+            height: 4px;
+            background: white;
+            border-radius: 5px;
+        }
+        .volume-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 45px;
+            height: 45px;
+            background: url('images/logo.png') no-repeat center center;
+            background-size: contain;
+            cursor: pointer;
+            margin-top: -14px;
+            border-radius: 50%;
+            border: 3px solid red;
+            background-color: white;
+        }
+        .volume-slider::-moz-range-thumb {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            border: 3px solid red;
+            background: url('images/logo.png') no-repeat center center;
+            background-size: contain;
+            cursor: pointer;
+            background-color: white;
+        }
+        .price-text {
+            font-size: 24px;
+            color: white;
+            margin-top: 5px;
+            font-weight: bold;
+        }
+        .price-text_2 {
+            font-size: 24px;
+            color: white;
+            margin-top: 5px;
+            font-weight: bold;
+        }
+        #modern-price-box {
+            /* background-color: #ffffff;
+            color: #1e3a8a;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+            border-radius: 16px;
+            padding: 5px 20px;
+            width: fit-content;
+            margin: 0 auto;
+            text-align: center;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; */
+
+            background: linear-gradient(45deg, #1e3a8a, #2563eb);
+            color: white;
+            padding: 12px 30px;
+            border: none;
+            border-radius: 25px;
+            font-size: 18px;
+            font-weight: bold;
+
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+        .modern-price-amount {
+            font-size: 20px;
+            font-weight: bold;
+        }
+        .modern-price-currency {
+            font-size: 14px;
+            margin-top: 4px;
+        }
+
+        .click-button {
+            background: linear-gradient(45deg, #1e3a8a, #2563eb);
+            color: white;
+            padding: 12px 30px;
+            border: none;
+            border-radius: 25px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s ease;
+            animation: pulseButton 2s infinite;
+        }
+
+        @keyframes pulseButton {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        .click-button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .click-button:active {
+            transform: scale(0.95);
+        }
+
+        /* Modal Styles */
+        .modal {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+            pointer-events: none;
+        }
+        .modal.show {
+            opacity: 1;
+            visibility: visible;
+            pointer-events: auto;
+        }
+        .modal-content {
+            background: white;
+            margin: 20px;
+            padding: 20px;
+            border-radius: 10px;
+            color: #1e3a8a;
+            transform: translateY(-10px);
+            transition: transform 0.3s ease;
+        }
+        .modal.show .modal-content {
+            transform: translateY(0);
+        }
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        .modal-title {
+            font-size: 20px;
+            font-weight: bold;
+        }
+        .specs-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        .specs-list li {
+            margin-bottom: 10px;
+            padding: 5px 0;
+            border-bottom: 1px solid #eee;
+        }
+        .specs-list li:last-child {
+            border-bottom: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="diamond-ad">
+        <div class="content">
+            <div class="header">
+                <img src="images/logo.png" alt="Logo" class="logo">
+                <div id="modern-price-box">
+                    <div class="modern-price-amount price-text price">30,000</div>
+                    <div class="modern-price-currency">Taka</div>
+                </div>
+            </div>
+            <img src="images/1.png" alt="Product" class="product-image" id="productImage">
+            <div class="volume-control">
+                <button class="click-button" id="clickButton">Click to Buy Now</button>
+                <input type="range" min="0" max="3" value="0" class="volume-slider" id="volumeSlider">
+                <div class="price-text_2">Price Low to High</div>
+            </div>
+        </div>
+
+        <!-- Modal Dialog -->
+        <div class="modal" id="specsModal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <div class="modal-title">Fridge Specifications</div>
+                </div>
+                <ul class="specs-list" id="specsList">
+                    <!-- Specifications will be inserted here -->
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const volumeSlider = document.getElementById('volumeSlider');
+        const priceElement = document.querySelector('.price');
+        const productImage = document.getElementById('productImage');
+        const modal = document.getElementById('specsModal');
+        const specsList = document.getElementById('specsList');
+        const clickButton = document.getElementById('clickButton');
+        
+        const prices = [30000, 35000, 40000, 45000];
+        const imagePaths = [
+            'images/1.png',
+            'images/2.png',
+            'images/3.png',
+            'images/4.png'
+        ];
+
+        // URLs for each fridge model
+        const fridgeUrls = [
+            'https://atlantisdecora.com/product-details/walton-refrigerator-wfe-3a2-gdxx-xx-312-ltr-81321678901254',  // URL for Model A
+            'https://waltonbd.com/wfe-3b0-gdel-xx',  // URL for Model B
+            'https://www.ula.com.bd/product/walton-direct-cool-refrigerator-213l-wfa-2a3-gdxx-xx',  // URL for Model C
+            'https://waltonbd.com/wfc-3f5-gdne-xx-inverter?search=%28Inverter%29&description=true&limit=75'   // URL for Model D
+        ];
+
+        const fridgeSpecs = [
+            {
+                model: "Model A",
+                specs: [
+                    "Capacity: 200L",
+                    "Energy Rating: A++",
+                    "No Frost Technology",
+                    "3 Star Rating",
+                    "2 Year Warranty"
+                ]
+            },
+            {
+                model: "Model B",
+                specs: [
+                    "Capacity: 250L",
+                    "Energy Rating: A+++",
+                    "Smart Inverter Technology",
+                    "4 Star Rating",
+                    "3 Year Warranty"
+                ]
+            },
+            {
+                model: "Model C",
+                specs: [
+                    "Capacity: 300L",
+                    "Energy Rating: A+++",
+                    "Dual Cooling System",
+                    "5 Star Rating",
+                    "4 Year Warranty"
+                ]
+            },
+            {
+                model: "Model D",
+                specs: [
+                    "Capacity: 350L",
+                    "Energy Rating: A+++",
+                    "Smart AI Technology",
+                    "5 Star Rating",
+                    "5 Year Warranty"
+                ]
+            }
+        ];
+
+        volumeSlider.addEventListener('input', function() {
+            const index = parseInt(this.value);
+            const price = prices[index];
+            priceElement.textContent = price.toLocaleString();
+            productImage.src = imagePaths[index];
+        });
+
+        let hoverTimeout;
+        productImage.addEventListener('mouseenter', function() {
+            clearTimeout(hoverTimeout);
+            const currentIndex = parseInt(volumeSlider.value);
+            const specs = fridgeSpecs[currentIndex];
+            
+            specsList.innerHTML = specs.specs.map(spec => `<li>${spec}</li>`).join('');
+            modal.classList.add('show');
+        });
+
+        productImage.addEventListener('mouseleave', function() {
+            hoverTimeout = setTimeout(() => {
+                modal.classList.remove('show');
+            }, 100);
+        });
+
+        // Add click event to the button to redirect to the appropriate URL in new tab
+        clickButton.addEventListener('click', function() {
+            const currentIndex = parseInt(volumeSlider.value);
+            window.open(fridgeUrls[currentIndex], '_blank');
+        });
+
+        // Prevent modal from hiding when hovering over it
+        modal.addEventListener('mouseenter', function() {
+            clearTimeout(hoverTimeout);
+        });
+
+        modal.addEventListener('mouseleave', function() {
+            modal.classList.remove('show');
+        });
+    </script>
+</body>
+</html>
